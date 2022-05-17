@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.IOException;
 import java.util.Map;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -20,8 +19,6 @@ import com.boot.repository.UserRepository;
 import com.boot.repository.custom.CustomUserRepository;
 import com.boot.service.ConnectService;
 import com.boot.service.JWTService;
-import com.boot.valid.ValidUser;
-import com.google.gson.Gson;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -48,16 +45,6 @@ class BootApplicationTests {
 	void sighUp() {
 
 		User user = User.builder().userId("hong12").name("김둘리").password("123456").regNo("921108-1582816").build();
-		boolean flag = false;
-
-		if(ValidUser.nameAndRegNoMatch(user)) {
-			flag = true;
-		}
-
-		if(!flag) {
-			fail("not Matched valid user");
-			return;
-		}
 
 		customUserRepository.save(user);
 
@@ -111,26 +98,6 @@ class BootApplicationTests {
 			assertFalse(false);
 			return;
 		}
-
-		sUserId = userResult.getUserId();
-
-		Gson gson = new Gson();
-		String bodyStr = gson.toJson(userResult);
-		ResultData resultSendPost = new ResultData();
-		try {
-			resultSendPost = connectService.sendPost("https://codetest.3o3.co.kr/v1/scrap", bodyStr);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		if(resultSendPost.getResultCode() == 200 && resultSendPost.getResultData() != null && resultSendPost.getResultData().containsKey("resultData")) {
-			resultMap =  (Map<String, Object>) resultSendPost.getResultData().get("resultData");
-		}
-
 	}
 
 }
