@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,32 +30,29 @@ public class UserController {
 	
 	@ApiOperation(value = "회원가입")
 	@RequestMapping(value = "/signup", method = {RequestMethod.POST})
-	@ResponseStatus(code = HttpStatus.OK)
-    public ResultData insertUser(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResultData> insertUser(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
     	
     	ResultData resultData = userService.insertUser(user);
     	
-    	return resultData;
+    	return ResponseEntity.ok().body(resultData);
     }
     
 	@ApiOperation(value = "로그인")
 	@RequestMapping(value = "/login", method = {RequestMethod.POST})
-	@ResponseStatus(code = HttpStatus.OK)
-    public ResultData loginUser(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResultData> loginUser(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
     	
 		ResultData resultData = userService.loginUser(user);
     	
-    	return resultData;
+		return ResponseEntity.ok().body(resultData);
     }
 	
 	@ApiOperation(value = "내 정보 보기")
 	@RequestMapping(value = "/info", method = {RequestMethod.GET})
-	@ResponseStatus(code = HttpStatus.OK)
-    public ResultData selectMyInfo(@RequestHeader("Authorization") String auth, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResultData> selectMyInfo(@RequestHeader("Authorization") String auth, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
     	
 		ResultData resultData = userService.infoUser(auth);
     	
-    	return resultData;
+		return ResponseEntity.ok().body(resultData);
     }
 	
 }

@@ -7,17 +7,13 @@ import org.springframework.stereotype.Service;
 
 import com.boot.common.ResultData;
 import com.boot.entity.User;
-import com.boot.repository.UserRepository;
 import com.boot.repository.custom.CustomUserRepository;
-import com.boot.service.ConnectService;
 import com.boot.service.JWTService;
 import com.boot.service.UserService;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 	
-    @Autowired
-    private UserRepository userRepository;
     
 	@Autowired
 	CustomUserRepository customUserRepository;
@@ -25,16 +21,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JWTService jwtService;
     
-    @Autowired
-    private ConnectService connectService; 
-    
     //유저 등록
     public ResultData insertUser(User user) {
     	
-    	ResultData result = validationInserUser(user);
-    	
-    	if(result.getResultCode() != 200)
-    		return result;
+    	ResultData result = new ResultData();
     	
     	User userResult = customUserRepository.findByUserIdAndPassword(user.getUserId(), user.getPassword());
     	
