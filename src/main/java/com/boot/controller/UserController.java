@@ -6,16 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.boot.common.ResultData;
+import com.boot.dao.UserDao;
 import com.boot.entity.User;
 import com.boot.service.UserService;
 
@@ -30,18 +29,18 @@ public class UserController {
 	
 	@ApiOperation(value = "회원가입")
 	@RequestMapping(value = "/signup", method = {RequestMethod.POST})
-    public ResponseEntity<ResultData> insertUser(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResultData> insertUser(@RequestBody UserDao userDao, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
     	
-    	ResultData resultData = userService.insertUser(user);
+    	ResultData resultData = userService.insertUser(userDao);
     	
     	return ResponseEntity.ok().body(resultData);
     }
     
 	@ApiOperation(value = "로그인")
 	@RequestMapping(value = "/login", method = {RequestMethod.POST})
-    public ResponseEntity<ResultData> loginUser(@RequestBody User user, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
+    public ResponseEntity<ResultData> loginUser(@RequestBody UserDao userDao, HttpServletResponse response, HttpServletRequest request) throws NoSuchAlgorithmException {
     	
-		ResultData resultData = userService.loginUser(user);
+		ResultData resultData = userService.loginUser(userDao);
     	
 		return ResponseEntity.ok().body(resultData);
     }

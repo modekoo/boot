@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.boot.common.ResultData;
+import com.boot.dao.UserDao;
 import com.boot.entity.User;
 import com.boot.repository.custom.CustomUserRepository;
 import com.boot.service.JWTService;
@@ -22,9 +23,11 @@ public class UserServiceImpl implements UserService {
     private JWTService jwtService;
     
     //유저 등록
-    public ResultData insertUser(User user) {
+    public ResultData insertUser(UserDao userDao) {
     	
     	ResultData result = new ResultData();
+    	
+    	User user = User.builder().userId(userDao.getUserId()).password(userDao.getPassword()).regNo(userDao.getRegNo()).name(userDao.getName()).build();
     	
     	User userResult = customUserRepository.findByUserIdAndPassword(user.getUserId(), user.getPassword());
     	
@@ -34,7 +37,7 @@ public class UserServiceImpl implements UserService {
     		return result;
     	}
     	
-    	userResult = customUserRepository.save(user);		
+    	userResult = customUserRepository.save(user);
     			
     	if(userResult == null || !user.getUserId().equals(userResult.getUserId())) {
     		result.setResultMsg("insert user fail");
@@ -44,7 +47,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
     
-    private ResultData validationInserUser(User user) {
+    private ResultData validationInserUser(UserDao user) {
     	ResultData resultData = new ResultData();
 		boolean flag = false;
     	
@@ -64,15 +67,16 @@ public class UserServiceImpl implements UserService {
     }
     
     //유저 로그인
-    public ResultData loginUser(User user) {
+    public ResultData loginUser(UserDao userDao) {
     	
     	ResultData result = new ResultData();
     	
-    	if(user == null || user.getUserId() == null || user.getPassword() == null) {
+    	if(userDao == null || userDao.getUserId() == null || userDao.getPassword() == null) {
     		result.setResultMsg("input user, password");
     		result.setResultCode(400);
     		return result;
     	}
+    	User user = User.builder().userId(userDao.getUserId()).password(userDao.getPassword()).regNo(userDao.getRegNo()).name(userDao.getName()).build();
     	
     	User userResult = customUserRepository.findByUserIdAndPassword(user.getUserId(), user.getPassword());
     	
