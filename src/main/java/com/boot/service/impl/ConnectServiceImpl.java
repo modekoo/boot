@@ -12,15 +12,15 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.boot.common.ResultData;
+import com.boot.dto.ResultDto;
 import com.boot.service.ConnectService;
 import com.google.gson.Gson;
 
 @Service("ConnectService")
 public class ConnectServiceImpl implements ConnectService {
-	public ResultData sendPost(String  uri, String bodyStr) throws IOException, InterruptedException {
+	public ResultDto sendPost(String  uri, String bodyStr) throws IOException, InterruptedException {
 		
-		ResultData resultData = new ResultData();
+		ResultDto ResultDto = new ResultDto();
 		
 		HttpClient client = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder(URI.create(uri))
@@ -30,15 +30,15 @@ public class ConnectServiceImpl implements ConnectService {
 
 		HttpResponse<?> response = client.send(request, BodyHandlers.ofString());
 		
-		resultData.setResultCode(response.statusCode());
+		ResultDto.setResultCode(response.statusCode());
 		
 		if(response.body() != null) {
 			Gson gson = new Gson();
 			HashMap<String, Object> resultMap = new HashMap<>();
-			resultMap.put("resultData", gson.fromJson((String) response.body(), Map.class) );
-			resultData.setResultData(resultMap);
+			resultMap.put("ResultDto", gson.fromJson((String) response.body(), Map.class) );
+			ResultDto.setResultData(resultMap);
 		}
 		
-		return resultData;
+		return ResultDto;
 	}
 }

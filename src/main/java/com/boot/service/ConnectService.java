@@ -2,8 +2,8 @@ package com.boot.service;
 
 import java.io.IOException;
 
-import com.boot.common.ResultData;
+import com.boot.dto.ResultDto;
 
 public interface ConnectService {
-	ResultData sendPost(String uri, String bodyStr) throws IOException, InterruptedException;
+	ResultDto sendPost(String uri, String bodyStr) throws IOException, InterruptedException;
 }

@@ -8,16 +8,16 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -46,6 +46,12 @@ public class User {
     	this.userId = userId;
     	this.password = password;
     }
-    
+	
+	@Builder(builderMethodName = "loginUserInfoBuilder")
+    public User(String userId, String name, String regNo) {
+    	this.userId = userId;
+    	this.name = name;
+    	this.regNo = regNo;
+    }
     
 }

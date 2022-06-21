@@ -5,8 +5,8 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.boot.common.ResultData;
-import com.boot.dao.UserDao;
+import com.boot.dto.ResultDto;
+import com.boot.dto.UserDto;
 import com.boot.entity.User;
 import com.boot.repository.custom.CustomUserRepository;
 import com.boot.service.JWTService;
@@ -23,11 +23,11 @@ public class UserServiceImpl implements UserService {
     private JWTService jwtService;
     
     //유저 등록
-    public ResultData insertUser(UserDao userDao) {
+    public ResultDto insertUser(UserDto userDto) {
     	
-    	ResultData result = new ResultData();
+    	ResultDto result = new ResultDto();
     	
-    	User user = User.builder().userId(userDao.getUserId()).password(userDao.getPassword()).regNo(userDao.getRegNo()).name(userDao.getName()).build();
+    	User user = User.builder().userId(userDto.getUserId()).password(userDto.getPassword()).regNo(userDto.getRegNo()).name(userDto.getName()).build();
     	
     	User userResult = customUserRepository.findByUserIdAndPassword(user.getUserId(), user.getPassword());
     	
@@ -47,36 +47,36 @@ public class UserServiceImpl implements UserService {
         return result;
     }
     
-    private ResultData validationInserUser(UserDao user) {
-    	ResultData resultData = new ResultData();
+    private ResultDto validationInserUser(UserDto user) {
+    	ResultDto ResultDto = new ResultDto();
 		boolean flag = false;
     	
     	if(user == null || user.getUserId() == null || user.getPassword() == null || user.getRegNo() == null) {
-    		resultData.setResultCode(400);
-    		resultData.setResultMsg("input values");
-    		return resultData;
+    		ResultDto.setResultCode(400);
+    		ResultDto.setResultMsg("input values");
+    		return ResultDto;
     	}
     	
 		if(!flag) {
-			resultData.setResultCode(400);
-    		resultData.setResultMsg("not matched valid user");
-    		return resultData;
+			ResultDto.setResultCode(400);
+    		ResultDto.setResultMsg("not matched valid user");
+    		return ResultDto;
 		}
     	
-    	return resultData;
+    	return ResultDto;
     }
     
     //유저 로그인
-    public ResultData loginUser(UserDao userDao) {
+    public ResultDto loginUser(UserDto userDto) {
     	
-    	ResultData result = new ResultData();
+    	ResultDto result = new ResultDto();
     	
-    	if(userDao == null || userDao.getUserId() == null || userDao.getPassword() == null) {
+    	if(userDto == null || userDto.getUserId() == null || userDto.getPassword() == null) {
     		result.setResultMsg("input user, password");
     		result.setResultCode(400);
     		return result;
     	}
-    	User user = User.builder().userId(userDao.getUserId()).password(userDao.getPassword()).regNo(userDao.getRegNo()).name(userDao.getName()).build();
+    	User user = User.builder().userId(userDto.getUserId()).password(userDto.getPassword()).regNo(userDto.getRegNo()).name(userDto.getName()).build();
     	
     	User userResult = customUserRepository.findByUserIdAndPassword(user.getUserId(), user.getPassword());
     	
@@ -98,9 +98,9 @@ public class UserServiceImpl implements UserService {
     }
     
     //유저 정보 확인
-    public ResultData infoUser(String token){
+    public ResultDto infoUser(String token){
     	
-    	ResultData result = new ResultData();
+    	ResultDto result = new ResultDto();
     	
     	if(token == null || token.equals("")) {
     		result.setResultCode(400);
@@ -123,8 +123,10 @@ public class UserServiceImpl implements UserService {
     		return result;
     	}
     	
+    	UserDto userDto = UserDto.builder().userId(userResult.getUserId()).name(userResult.getName()).regNo(userResult.getRegNo()).build();
+    	
     	HashMap<String, Object> resultMap = new HashMap<String, Object>();
-    	resultMap.put("userInfo", userResult);
+    	resultMap.put("userInfo", userDto);
     	result.setResultData(resultMap);
     	
         return result;

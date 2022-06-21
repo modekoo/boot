@@ -5,14 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.boot.common.ResultData;
+import com.boot.dto.ResultDto;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
 	@ExceptionHandler(Exception.class)
-    protected ResponseEntity<ResultData> handleException(Exception e) {
+    protected ResponseEntity<ResultDto> handleException(Exception e) {
 
-        ResultData response = new ResultData();
+        ResultDto response = new ResultDto();
         response.setResultCode(500);
         response.setResultMsg(e.getMessage());
 

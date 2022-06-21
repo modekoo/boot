@@ -1,16 +1,16 @@
 package com.boot.service;
 
-import com.boot.common.ResultData;
-import com.boot.dao.UserDao;
+import com.boot.dto.ResultDto;
+import com.boot.dto.UserDto;
 
 public interface UserService {
 
     //유저 등록
-    ResultData insertUser(UserDao user);
+	ResultDto insertUser(UserDto user);
     
     //유저 로그인
-    ResultData loginUser(UserDao user);
+	ResultDto loginUser(UserDto user);
     
     //유저 정보 확인
-    ResultData infoUser(String token);
+	ResultDto infoUser(String token);
 }
