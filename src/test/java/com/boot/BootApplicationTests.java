@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.boot.dto.ResultDto;
+import com.boot.dto.UserDto;
 import com.boot.entity.User;
 import com.boot.repository.UserRepository;
 import com.boot.repository.custom.CustomUserRepository;
@@ -58,7 +59,9 @@ class BootApplicationTests {
 
 		User userResult = customUserRepository.findByUserIdAndPassword(user.getUserId(), user.getPassword());
 
-		token = jwtService.createToken(userResult);
+		UserDto userDto = UserDto.builder().userId(userResult.getUserId()).build();
+		
+		token = jwtService.createToken(userDto);
 
 		assertEquals(user.getUserId(), userResult.getUserId());
 	}

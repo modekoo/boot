@@ -1,6 +1,5 @@
 package com.boot.repository.custom;
 
-import java.awt.print.Pageable;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.List;

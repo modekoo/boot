@@ -95,9 +95,9 @@ public class AES256Util {
     public User decryptUser(User user) throws NoSuchAlgorithmException, UnsupportedEncodingException, GeneralSecurityException {
     	User resultUser = User.builder()
     						.userId(user.getUserId())
-    						.password(decrypt(user.getPassword()))
     						.name(user.getName())
-    						.regNo(decrypt(user.getRegNo()))
+//    						.regNo(decrypt(user.getRegNo()))
+    						.regNo(user.getRegNo())
     						.build();
     	
     	return resultUser;

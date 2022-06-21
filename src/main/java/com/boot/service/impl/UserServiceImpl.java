@@ -86,7 +86,9 @@ public class UserServiceImpl implements UserService {
     		return result;
     	}
     	
-    	String token = jwtService.createToken(userResult);
+    	UserDto toKenUserDto = UserDto.builder().userId(userResult.getUserId()).build();
+    	
+    	String token = jwtService.createToken(toKenUserDto);
     	
     	if(token != null) {
     		HashMap<String, Object> returnMap = new HashMap<>();
@@ -123,7 +125,7 @@ public class UserServiceImpl implements UserService {
     		return result;
     	}
     	
-    	UserDto userDto = UserDto.builder().userId(userResult.getUserId()).name(userResult.getName()).regNo(userResult.getRegNo()).build();
+    	UserDto userDto = UserDto.userInfoBuilder().userId(userResult.getUserId()).name(userResult.getName()).regNo(userResult.getRegNo()).build();
     	
     	HashMap<String, Object> resultMap = new HashMap<String, Object>();
     	resultMap.put("userInfo", userDto);

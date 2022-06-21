@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 import org.springframework.stereotype.Service;
 
-import com.boot.entity.User;
+import com.boot.dto.UserDto;
 import com.boot.service.JWTService;
 
 import io.jsonwebtoken.Claims;
@@ -17,13 +17,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service("JWTService")
 public class JWTServiceImpl implements JWTService {
 
-    private static final String privateKey =  "sts";
+    private static final String privateKey =  "demo";
     
-    public String createToken(User user){
+    public String createToken(UserDto userDto){
         String jwt = Jwts.builder()
                          .setHeaderParam("typ", "JWT")
                          .setHeaderParam("regDate", System.currentTimeMillis())
-                         .claim("userId", user.getUserId())
+                         .claim("userId", userDto.getUserId())
                          .signWith(SignatureAlgorithm.HS256, this.generateKey())
                          .compact();
         return jwt;
@@ -60,10 +60,10 @@ public class JWTServiceImpl implements JWTService {
     
     public String getUserId(String jwt) throws io.jsonwebtoken.JwtException{
     	
+    	jwt = jwt.replace("Bearer ", "").trim();
+    	
     	if(!verify(jwt))
     		throw new io.jsonwebtoken.JwtException("not valid Token");
-    	
-    	jwt = jwt.replace("Bearer ", "").trim();
     	
         Jws<Claims> claims = Jwts.parser()
         			.setSigningKey(this.generateKey())

@@ -2,11 +2,11 @@ package com.boot.service;
 
 import java.security.NoSuchAlgorithmException;
 
-import com.boot.entity.User;
+import com.boot.dto.UserDto;
 
 public interface JWTService {
 
-    String createToken(User user);
+    String createToken(UserDto user);
  
     byte[] generateKey();
     
